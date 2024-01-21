@@ -22,7 +22,29 @@ func currentMemoryUsage() -> UInt? {
     }
 }
 
-let memoryInfoPublisher = Timer.publish(every: 0.1, on: .main, in: .common)
+func reportSystemMemory() {
+    var stats = vm_statistics64()
+    var size = mach_msg_type_number_t(MemoryLayout<vm_statistics64>.size / MemoryLayout<integer_t>.size)
+    let kerr = withUnsafeMutablePointer(to: &stats) {
+        $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+            host_statistics64(mach_host_self(), HOST_VM_INFO64, $0, &size)
+        }
+    }
+
+    if kerr == KERN_SUCCESS {
+        let totalMemory = ProcessInfo.processInfo.physicalMemory
+        let usedMemory = UInt64(stats.active_count + stats.inactive_count + stats.wire_count) * UInt64(vm_kernel_page_size)
+        let freeMemory = totalMemory - usedMemory
+
+        print("Total Memory: \(totalMemory) bytes")
+        print("Used Memory: \(usedMemory) bytes")
+        print("Free Memory: \(freeMemory) bytes")
+    } else {
+        print("Error with host_statistics64(): \(String(cString: mach_error_string(kerr), encoding: .ascii) ?? "unknown error")")
+    }
+}
+
+let memoryInfoPublisher = Timer.publish(every: 1.0, on: .main, in: .common)
     .autoconnect()
     .map { _ in currentMemoryUsage() }
     .eraseToAnyPublisher()
@@ -54,6 +76,11 @@ class SampleHandler: RPBroadcastSampleHandler {
   var ciContext: CIContext! // Reusable CIContext
   var latestSampleBuffer: CMSampleBuffer?
   
+  deinit {
+      cancellables.forEach { $0.cancel() }
+      cancellables.removeAll()
+  }
+  
   override init() {
       super.init()
       setup()
@@ -65,10 +92,10 @@ class SampleHandler: RPBroadcastSampleHandler {
           }
           .store(in: &cancellables)
 
-      Timer.publish(every: 1.0, on: .main, in: .common)
+      Timer.publish(every: 2.0, on: .main, in: .common)
           .autoconnect()
           .sink { [weak self] _ in
-              guard let self = self, self.framesSaved < 5, let sampleBuffer = self.latestSampleBuffer else { return }
+              guard let self = self, self.framesSaved < 15, let sampleBuffer = self.latestSampleBuffer else { return }
 
               let timestamp = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer).seconds
               if timestamp - self.previousTimestamp >= 1.0 {
@@ -83,8 +110,7 @@ class SampleHandler: RPBroadcastSampleHandler {
     
     memoryInfoPublisher
         .sink { memoryUsage in
-            guard let memoryUsage = memoryUsage else { return }
-            print("Current memory usage: \(memoryUsage)")
+          reportSystemMemory()
 
             // Implement your logic to buffer or process frames based on memory usage
             // For example:
@@ -112,13 +138,14 @@ class SampleHandler: RPBroadcastSampleHandler {
                     return
                 }
 
-                let ciImage = CIImage(cvPixelBuffer: imageBuffer)
+              var ciImage: CIImage? = CIImage(cvPixelBuffer: imageBuffer)
                 
-                if let cgImage = self.ciContext.createCGImage(ciImage, from: ciImage.extent) {
+                if let cgImage = self.ciContext.createCGImage(ciImage!, from: ciImage!.extent) {
                     print("CGImage created successfully.")
+                  var uiImage: UIImage? = UIImage(cgImage: cgImage)
                     
                     PHPhotoLibrary.shared().performChanges({
-                        PHAssetChangeRequest.creationRequestForAsset(from: UIImage(cgImage: cgImage))
+                        PHAssetChangeRequest.creationRequestForAsset(from: uiImage!)
                     }, completionHandler: { [weak self] success, error in
                         DispatchQueue.main.async {
                             if success {
@@ -127,11 +154,15 @@ class SampleHandler: RPBroadcastSampleHandler {
                             } else {
                                 print("Failed to save frame: \(String(describing: error))")
                             }
+                           
+                          uiImage = nil
+                          ciImage = nil
                         }
                     })
                 } else {
                     print("Failed to create CGImage.")
                 }
+              
             }
         }
     }
