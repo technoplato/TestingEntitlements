@@ -17,30 +17,38 @@ class SampleHandler: RPBroadcastSampleHandler {
             .filter { CMSampleBufferGetOutputPresentationTimeStamp($0).seconds.truncatingRemainder(dividingBy: 1) == 0 }
             .prefix(5)
             .sink { [weak self] sampleBuffer in
+                print("Received a video frame.")
                 guard let self = self else { return }
-                if let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
-                    let ciImage = CIImage(cvPixelBuffer: imageBuffer)
-                    let context = CIContext()
-                    if let cgImage = context.createCGImage(ciImage, from: ciImage.extent) {
-                        PHPhotoLibrary.shared().performChanges({
-                            PHAssetChangeRequest.creationRequestForAsset(from: UIImage(cgImage: cgImage))
-                        }, completionHandler: { success, error in
-                            if success {
-                                self.framesSaved += 1
-                            } else {
-                                print("Failed to save frame: \(String(describing: error))")
-                            }
-                        })
-                    }
-                }
+                self.saveFrameToPhotoLibrary(sampleBuffer)
             }
             .store(in: &cancellables)
     }
 
     func setup() {
+        print("Setting up...")
         fileManager = FileManager.default
         groupURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.com.knophy.mybroadcast")!
         fileURL = groupURL.appendingPathComponent("identity.txt")
+    }
+
+    func saveFrameToPhotoLibrary(_ sampleBuffer: CMSampleBuffer) {
+        print("Saving frame to photo library...")
+        if let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+            let ciImage = CIImage(cvPixelBuffer: imageBuffer)
+            let context = CIContext()
+            if let cgImage = context.createCGImage(ciImage, from: ciImage.extent) {
+                PHPhotoLibrary.shared().performChanges({
+                    PHAssetChangeRequest.creationRequestForAsset(from: UIImage(cgImage: cgImage))
+                }, completionHandler: { success, error in
+                    if success {
+                        self.framesSaved += 1
+                        print("Frame saved successfully.")
+                    } else {
+                        print("Failed to save frame: \(String(describing: error))")
+                    }
+                })
+            }
+        }
     }
 
     func writeIdentity() {
