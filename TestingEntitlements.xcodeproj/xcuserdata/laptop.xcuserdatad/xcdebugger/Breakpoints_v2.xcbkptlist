@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "63BFD50A-1AD8-44A6-8D05-D9201F79F5D6"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "09315E71-463C-4D25-BD56-C4A7029A1237"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestingEntitlementsBroadcastExtension/SampleHandler.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "init()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "09315E71-463C-4D25-BD56-C4A7029A1237 - 71f997b273e3ffe2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TestingEntitlementsBroadcastExtension.SampleHandler.init() -&gt; TestingEntitlementsBroadcastExtension.SampleHandler"
+                  moduleName = "TestingEntitlementsBroadcastExtension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/laptop/Development/FRAM3D-UV-BIN/TestingEntitlements/TestingEntitlementsBroadcastExtension/SampleHandler.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "748">
+               </Location>
+               <Location
+                  uuid = "09315E71-463C-4D25-BD56-C4A7029A1237 - eabfa4b0f231be1d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.CMSampleBufferRef) -&gt; Swift.Bool in TestingEntitlementsBroadcastExtension.SampleHandler.init() -&gt; TestingEntitlementsBroadcastExtension.SampleHandler"
+                  moduleName = "TestingEntitlementsBroadcastExtension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/laptop/Development/FRAM3D-UV-BIN/TestingEntitlements/TestingEntitlementsBroadcastExtension/SampleHandler.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "32">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "91A69E80-EB8A-4FBD-ACE0-7490B83F33DA"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestingEntitlementsBroadcastExtension/SampleHandler.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "init()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
