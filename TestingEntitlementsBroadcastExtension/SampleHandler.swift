@@ -15,9 +15,9 @@ class SampleHandler: RPBroadcastSampleHandler {
         }
         
         if result == KERN_SUCCESS {
-            print("Memory in use (in bytes): \(taskInfo.resident_size)")
+            logEvent("Memory in use (in bytes): \(taskInfo.resident_size)")
         } else {
-            print("Error with task_info(): " +
+            logEvent("Error with task_info(): " +
                 (String(cString: mach_error_string(result), encoding: .ascii) ?? "unknown error"))
         }
     }
@@ -29,58 +29,67 @@ class SampleHandler: RPBroadcastSampleHandler {
     let videoFramePublisher = PassthroughSubject<CMSampleBuffer, Never>()
     var cancellables = Set<AnyCancellable>()
 
-    override init() {
-        super.init()
-        setup()
-        videoFramePublisher
-            .throttle(for: .seconds(1), scheduler: DispatchQueue.main, latest: true)
-            .sink { [weak self] sampleBuffer in
-                guard let self = self else { return }
-                if self.framesSaved < 5 {
-                    let timestamp = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer).seconds
-                    print("Received a video frame at \(timestamp)")
-                    // self.saveFrameToPhotoLibrary(sampleBuffer)
-                    print("Interval since last frame: \(timestamp - self.previousTimestamp)")
-                    self.previousTimestamp = timestamp
-                }
-            }
-            .store(in: &cancellables)
-        
-        // Add memory reporting
-        Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { timer in
-            self.reportMemory()
-        }
-    }
+  var latestSampleBuffer: CMSampleBuffer?
+  
+  override init() {
+      super.init()
+      setup()
 
+      videoFramePublisher
+          .sink { [weak self] sampleBuffer in
+              self?.latestSampleBuffer = sampleBuffer
+          }
+          .store(in: &cancellables)
+
+      Timer.publish(every: 1.0, on: .main, in: .common)
+          .autoconnect()
+          .sink { [weak self] _ in
+              guard let self = self, self.framesSaved < 5, let sampleBuffer = self.latestSampleBuffer else { return }
+
+              let timestamp = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer).seconds
+              if timestamp - self.previousTimestamp >= 1.0 {
+                  self.saveFrameToPhotoLibrary(sampleBuffer)
+                  self.previousTimestamp = timestamp
+                  self.latestSampleBuffer = nil // Reset the latest frame
+              }
+          }
+          .store(in: &cancellables)
+
+      // Memory reporting remains unchanged
+      Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { timer in
+          self.reportMemory()
+      }
+  }
+  
     func setup() {
-        print("Setting up...")
+        logEvent("Setting up...")
         fileManager = FileManager.default
         groupURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.com.knophy.mybroadcast")!
         fileURL = groupURL.appendingPathComponent("identity.txt")
     }
 
     func saveFrameToPhotoLibrary(_ sampleBuffer: CMSampleBuffer) {
-        print("Saving frame to photo library...")
+        logEvent("Saving frame to photo library...")
         if let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
             let ciImage = CIImage(cvPixelBuffer: imageBuffer)
             let context = CIContext()
             if let cgImage = context.createCGImage(ciImage, from: ciImage.extent) {
-                print("CGImage created successfully.")
+                logEvent("CGImage created successfully.")
                 PHPhotoLibrary.shared().performChanges({
                     PHAssetChangeRequest.creationRequestForAsset(from: UIImage(cgImage: cgImage))
                 }, completionHandler: { success, error in
                     if success {
                         self.framesSaved += 1
-                        print("Frame saved successfully.")
+                        logEvent("Frame saved successfully.")
                     } else {
-                        print("Failed to save frame: \(String(describing: error))")
+                        logEvent("Failed to save frame: \(String(describing: error))")
                     }
                 })
             } else {
-                print("Failed to create CGImage.")
+                logEvent("Failed to create CGImage.")
             }
         } else {
-            print("Failed to get image buffer from sample buffer.")
+            logEvent("Failed to get image buffer from sample buffer.")
         }
     }
 
@@ -88,7 +97,7 @@ class SampleHandler: RPBroadcastSampleHandler {
         do {
             try "asdfasdfasdf".write(to: fileURL, atomically: true, encoding: .utf8)
         } catch {
-            print("Failed to write identity: \(error)")
+            logEvent("Failed to write identity: \(error)")
         }
     }
 
@@ -96,7 +105,7 @@ class SampleHandler: RPBroadcastSampleHandler {
         do {
             return try String(contentsOf: fileURL, encoding: .utf8)
         } catch {
-            print("Failed to read identity: \(error)")
+            logEvent("Failed to read identity: \(error)")
             return ""
         }
     }
@@ -104,8 +113,7 @@ class SampleHandler: RPBroadcastSampleHandler {
     override func broadcastStarted(withSetupInfo setupInfo: [String : NSObject]?) {
         logEvent("Broadcast started - Setup Info: \(String(describing: setupInfo))")
 
-      print(writeIdentity())
-        print(readIdentity())
+        logEvent(readIdentity())
     }
     
     override func broadcastPaused() {
@@ -131,18 +139,18 @@ class SampleHandler: RPBroadcastSampleHandler {
     override func processSampleBuffer(_ sampleBuffer: CMSampleBuffer, with sampleBufferType: RPSampleBufferType) {
         switch sampleBufferType {
         case RPSampleBufferType.video:
-            logEvent("Processing video sample buffer")
+//            logEvent("Processing video sample buffer")
             videoFramePublisher.send(sampleBuffer)
         case RPSampleBufferType.audioApp:
-            logEvent("Processing app audio sample buffer")
+//            logEvent("Processing app audio sample buffer")
             // Handle audio sample buffer for app audio
             break
         case RPSampleBufferType.audioMic:
-            logEvent("Processing microphone audio sample buffer")
+//            logEvent("Processing microphone audio sample buffer")
             // Handle audio sample buffer for mic audio
             break
         @unknown default:
-            logEvent("Encountered unknown type of sample buffer")
+//            logEvent("Encountered unknown type of sample buffer")
             fatalError("Unknown type of sample buffer")
         }
     }
