@@ -2,8 +2,25 @@ import ReplayKit
 import Combine
 import Photos
 import Dispatch
+import MachO
 
 class SampleHandler: RPBroadcastSampleHandler {
+    func reportMemory() {
+        var taskInfo = task_basic_info()
+        var count = mach_msg_type_number_t(MemoryLayout<task_basic_info>.size)/4
+        let result: kern_return_t = withUnsafeMutablePointer(to: &taskInfo) {
+            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+                task_info(mach_task_self_, task_flavor_t(TASK_BASIC_INFO), $0, &count)
+            }
+        }
+        
+        if result == KERN_SUCCESS {
+            print("Memory in use (in bytes): \(taskInfo.resident_size)")
+        } else {
+            print("Error with task_info(): " +
+                (String(cString: mach_error_string(result), encoding: .ascii) ?? "unknown error"))
+        }
+    }
     var fileManager: FileManager!
     var groupURL: URL!
     var fileURL: URL!
@@ -26,6 +43,11 @@ class SampleHandler: RPBroadcastSampleHandler {
                 }
             }
             .store(in: &cancellables)
+        
+        // Add memory reporting
+        Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { timer in
+            self.reportMemory()
+        }
     }
 
     func setup() {
