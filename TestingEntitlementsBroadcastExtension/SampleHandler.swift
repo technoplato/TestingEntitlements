@@ -1,13 +1,39 @@
 import ReplayKit
+import Combine
 
 class SampleHandler: RPBroadcastSampleHandler {
     var fileManager: FileManager!
     var groupURL: URL!
     var fileURL: URL!
+    var framesSaved = 0
+    let videoFramePublisher = PassthroughSubject<CMSampleBuffer, Never>()
+    var cancellables = Set<AnyCancellable>()
 
     override init() {
         super.init()
         setup()
+        videoFramePublisher
+            .filter { CMSampleBufferGetOutputPresentationTimeStamp($0).seconds.truncatingRemainder(dividingBy: 1) == 0 }
+            .prefix(5)
+            .sink { [weak self] sampleBuffer in
+                guard let self = self else { return }
+                if let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+                    let ciImage = CIImage(cvPixelBuffer: imageBuffer)
+                    let context = CIContext()
+                    if let cgImage = context.createCGImage(ciImage, from: ciImage.extent) {
+                        PHPhotoLibrary.shared().performChanges({
+                            PHAssetChangeRequest.creationRequestForAsset(from: UIImage(cgImage: cgImage))
+                        }, completionHandler: { success, error in
+                            if success {
+                                self.framesSaved += 1
+                            } else {
+                                print("Failed to save frame: \(String(describing: error))")
+                            }
+                        })
+                    }
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func setup() {
@@ -64,8 +90,7 @@ class SampleHandler: RPBroadcastSampleHandler {
         switch sampleBufferType {
         case RPSampleBufferType.video:
             logEvent("Processing video sample buffer")
-            // Handle video sample buffer
-            break
+            videoFramePublisher.send(sampleBuffer)
         case RPSampleBufferType.audioApp:
             logEvent("Processing app audio sample buffer")
             // Handle audio sample buffer for app audio
