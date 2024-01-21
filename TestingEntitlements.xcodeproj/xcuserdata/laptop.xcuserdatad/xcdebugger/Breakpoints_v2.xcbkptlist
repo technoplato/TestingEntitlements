@@ -14,8 +14,8 @@
             filePath = "TestingEntitlementsBroadcastExtension/SampleHandler.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "17"
-            endingLineNumber = "17"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
             landmarkName = "reportMemory()"
             landmarkType = "7">
             <Locations>
@@ -77,8 +77,8 @@
             filePath = "TestingEntitlementsBroadcastExtension/SampleHandler.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
             landmarkName = "reportMemory()"
             landmarkType = "7">
             <Locations>
@@ -140,8 +140,8 @@
             filePath = "TestingEntitlementsBroadcastExtension/SampleHandler.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "24"
-            endingLineNumber = "24"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
             landmarkName = "SampleHandler"
             landmarkType = "3">
          </BreakpointContent>

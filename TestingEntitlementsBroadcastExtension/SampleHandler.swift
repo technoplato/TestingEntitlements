@@ -4,6 +4,29 @@ import Photos
 import Dispatch
 import MachO
 
+func currentMemoryUsage() -> UInt? {
+    var taskInfo = task_basic_info()
+    var count = mach_msg_type_number_t(MemoryLayout<task_basic_info>.size) / 4
+    let result: kern_return_t = withUnsafeMutablePointer(to: &taskInfo) {
+        $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+            task_info(mach_task_self_, task_flavor_t(TASK_BASIC_INFO), $0, &count)
+        }
+    }
+
+    if result == KERN_SUCCESS {
+        return taskInfo.resident_size
+    } else {
+        print("Error with task_info(): " +
+                (String(cString: mach_error_string(result), encoding: .ascii) ?? "unknown error"))
+        return nil
+    }
+}
+
+let memoryInfoPublisher = Timer.publish(every: 0.1, on: .main, in: .common)
+    .autoconnect()
+    .map { _ in currentMemoryUsage() }
+    .eraseToAnyPublisher()
+
 class SampleHandler: RPBroadcastSampleHandler {
     func reportMemory() {
         var taskInfo = task_basic_info()
@@ -28,12 +51,13 @@ class SampleHandler: RPBroadcastSampleHandler {
   var previousTimestamp = 0.0
     let videoFramePublisher = PassthroughSubject<CMSampleBuffer, Never>()
     var cancellables = Set<AnyCancellable>()
-
+  var ciContext: CIContext! // Reusable CIContext
   var latestSampleBuffer: CMSampleBuffer?
   
   override init() {
       super.init()
       setup()
+    ciContext = CIContext() // Initialize the CIContext
 
       videoFramePublisher
           .sink { [weak self] sampleBuffer in
@@ -55,10 +79,22 @@ class SampleHandler: RPBroadcastSampleHandler {
           }
           .store(in: &cancellables)
 
-      // Memory reporting remains unchanged
-      Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { timer in
-          self.reportMemory()
-      }
+  
+    
+    memoryInfoPublisher
+        .sink { memoryUsage in
+            guard let memoryUsage = memoryUsage else { return }
+            print("Current memory usage: \(memoryUsage)")
+
+            // Implement your logic to buffer or process frames based on memory usage
+            // For example:
+//            if memoryUsage < someSafeMemoryThreshold {
+//                // Safe to process frames
+//            } else {
+//                // Buffer frames or take other memory-reducing actions
+//            }
+        }
+        .store(in: &cancellables)
   }
   
     func setup() {
@@ -68,30 +104,38 @@ class SampleHandler: RPBroadcastSampleHandler {
         fileURL = groupURL.appendingPathComponent("identity.txt")
     }
 
-    func saveFrameToPhotoLibrary(_ sampleBuffer: CMSampleBuffer) {
-        logEvent("Saving frame to photo library...")
-        if let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
-            let ciImage = CIImage(cvPixelBuffer: imageBuffer)
-            let context = CIContext()
-            if let cgImage = context.createCGImage(ciImage, from: ciImage.extent) {
-                logEvent("CGImage created successfully.")
-                PHPhotoLibrary.shared().performChanges({
-                    PHAssetChangeRequest.creationRequestForAsset(from: UIImage(cgImage: cgImage))
-                }, completionHandler: { success, error in
-                    if success {
-                        self.framesSaved += 1
-                        logEvent("Frame saved successfully.")
-                    } else {
-                        logEvent("Failed to save frame: \(String(describing: error))")
-                    }
-                })
-            } else {
-                logEvent("Failed to create CGImage.")
+  func saveFrameToPhotoLibrary(_ sampleBuffer: CMSampleBuffer) {
+        DispatchQueue.global(qos: .background).async {
+            autoreleasepool {
+                guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+                    print("Failed to get image buffer from sample buffer.")
+                    return
+                }
+
+                let ciImage = CIImage(cvPixelBuffer: imageBuffer)
+                
+                if let cgImage = self.ciContext.createCGImage(ciImage, from: ciImage.extent) {
+                    print("CGImage created successfully.")
+                    
+                    PHPhotoLibrary.shared().performChanges({
+                        PHAssetChangeRequest.creationRequestForAsset(from: UIImage(cgImage: cgImage))
+                    }, completionHandler: { [weak self] success, error in
+                        DispatchQueue.main.async {
+                            if success {
+                                self?.framesSaved += 1
+                                print("Frame saved successfully.")
+                            } else {
+                                print("Failed to save frame: \(String(describing: error))")
+                            }
+                        }
+                    })
+                } else {
+                    print("Failed to create CGImage.")
+                }
             }
-        } else {
-            logEvent("Failed to get image buffer from sample buffer.")
         }
     }
+
 
     func writeIdentity() {
         do {
@@ -161,3 +205,4 @@ func logEvent(_ message: String) {
     let timestamp = formatter.string(from: Date())
     print("\(timestamp): \(message)")
 }
+
