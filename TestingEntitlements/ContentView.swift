@@ -15,17 +15,27 @@ struct ContentView: View {
             Text(identity)
                 .font(.largeTitle)
                 .onAppear {
-                    let fileManager = FileManager.default
-                  print("hi i appeared in the view")
-                    let groupURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.com.knophy.mybroadcast")!
-                    let fileURL = groupURL.appendingPathComponent("identity.txt")
-
-                    do {
-                        identity = try String(contentsOf: fileURL, encoding: .utf8)
-                    } catch {
-                        print("Failed to read identity: \(error)")
-                    }
-                }
+                     let fileManager = FileManager.default
+                     print("hi i appeared in the view")
+                     let groupURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier:
+                 "group.com.knophy.mybroadcast")!
+                     let fileURL = groupURL.appendingPathComponent("identity.txt")
+                                                                                                                           
+                     if fileManager.fileExists(atPath: fileURL.path) {
+                         do {
+                             identity = try String(contentsOf: fileURL, encoding: .utf8)
+                         } catch {
+                             print("Failed to read identity: \(error)")
+                         }
+                     } else {
+                         do {
+                             try "foobarasdf".write(to: fileURL, atomically: true, encoding: .utf8)
+                             identity = "foobarasdf"
+                         } catch {
+                             print("Failed to write identity: \(error)")
+                         }
+                     }
+                 }    
         }
         .padding()
     }
