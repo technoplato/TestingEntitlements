@@ -25,6 +25,7 @@ class SampleHandler: RPBroadcastSampleHandler {
     var groupURL: URL!
     var fileURL: URL!
     var framesSaved = 0
+  var previousTimestamp = 0.0
     let videoFramePublisher = PassthroughSubject<CMSampleBuffer, Never>()
     var cancellables = Set<AnyCancellable>()
 
