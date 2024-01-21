@@ -34,8 +34,7 @@ class SampleHandler: RPBroadcastSampleHandler {
         setup()
         let timerPublisher = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
         videoFramePublisher
-            .combineLatest(timerPublisher)
-            .map { $0.0 }
+            .sample(on: timerPublisher)
             .sink { [weak self] sampleBuffer in
                 guard let self = self else { return }
                 if self.framesSaved < 5 {
