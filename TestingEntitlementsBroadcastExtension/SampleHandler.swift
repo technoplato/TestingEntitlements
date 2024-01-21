@@ -41,6 +41,7 @@ class SampleHandler: RPBroadcastSampleHandler {
             let ciImage = CIImage(cvPixelBuffer: imageBuffer)
             let context = CIContext()
             if let cgImage = context.createCGImage(ciImage, from: ciImage.extent) {
+                print("CGImage created successfully.")
                 PHPhotoLibrary.shared().performChanges({
                     PHAssetChangeRequest.creationRequestForAsset(from: UIImage(cgImage: cgImage))
                 }, completionHandler: { success, error in
@@ -51,7 +52,11 @@ class SampleHandler: RPBroadcastSampleHandler {
                         print("Failed to save frame: \(String(describing: error))")
                     }
                 })
+            } else {
+                print("Failed to create CGImage.")
             }
+        } else {
+            print("Failed to get image buffer from sample buffer.")
         }
     }
 
