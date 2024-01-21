@@ -1,6 +1,7 @@
 import ReplayKit
 import Combine
 import Photos
+import Dispatch
 
 class SampleHandler: RPBroadcastSampleHandler {
     var fileManager: FileManager!
@@ -13,11 +14,13 @@ class SampleHandler: RPBroadcastSampleHandler {
     override init() {
         super.init()
         setup()
+        let timerPublisher = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
         videoFramePublisher
-            .filter { CMSampleBufferGetOutputPresentationTimeStamp($0).seconds.truncatingRemainder(dividingBy: 1) == 0 }
-            .prefix(5)
+            .combineLatest(timerPublisher)
+            .map { $0.0 }
+            .take(5)
             .sink { [weak self] sampleBuffer in
-                print("Received a video frame.")
+                print("Received a video frame at \(CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer).seconds)")
                 guard let self = self else { return }
                 self.saveFrameToPhotoLibrary(sampleBuffer)
             }
