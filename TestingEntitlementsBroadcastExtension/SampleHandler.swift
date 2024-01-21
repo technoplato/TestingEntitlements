@@ -92,7 +92,7 @@ class SampleHandler: RPBroadcastSampleHandler {
           }
           .store(in: &cancellables)
 
-      Timer.publish(every: 2.0, on: .main, in: .common)
+      Timer.publish(every: 3.0, on: .main, in: .common)
           .autoconnect()
           .sink { [weak self] _ in
               guard let self = self, self.framesSaved < 15, let sampleBuffer = self.latestSampleBuffer else { return }
