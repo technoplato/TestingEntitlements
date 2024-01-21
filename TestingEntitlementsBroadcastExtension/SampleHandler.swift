@@ -18,11 +18,12 @@ class SampleHandler: RPBroadcastSampleHandler {
         videoFramePublisher
             .combineLatest(timerPublisher)
             .map { $0.0 }
-            .take(5)
             .sink { [weak self] sampleBuffer in
-                print("Received a video frame at \(CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer).seconds)")
                 guard let self = self else { return }
-                self.saveFrameToPhotoLibrary(sampleBuffer)
+                if self.framesSaved < 5 {
+                    print("Received a video frame at \(CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer).seconds)")
+                    self.saveFrameToPhotoLibrary(sampleBuffer)
+                }
             }
             .store(in: &cancellables)
     }
