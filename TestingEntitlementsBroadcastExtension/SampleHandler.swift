@@ -38,8 +38,11 @@ class SampleHandler: RPBroadcastSampleHandler {
             .sink { [weak self] sampleBuffer in
                 guard let self = self else { return }
                 if self.framesSaved < 5 {
-                    print("Received a video frame at \(CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer).seconds)")
-                    self.saveFrameToPhotoLibrary(sampleBuffer)
+                    let timestamp = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer).seconds
+                    print("Received a video frame at \(timestamp)")
+                    // self.saveFrameToPhotoLibrary(sampleBuffer)
+                    print("Interval since last frame: \(timestamp - self.previousTimestamp)")
+                    self.previousTimestamp = timestamp
                 }
             }
             .store(in: &cancellables)
