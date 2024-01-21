@@ -1,5 +1,6 @@
 import ReplayKit
 import Combine
+import Photos
 
 class SampleHandler: RPBroadcastSampleHandler {
     var fileManager: FileManager!
