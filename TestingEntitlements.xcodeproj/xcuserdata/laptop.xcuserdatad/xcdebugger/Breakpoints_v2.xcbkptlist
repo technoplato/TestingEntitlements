@@ -16,7 +16,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "17"
             endingLineNumber = "17"
-            landmarkName = "init()"
+            landmarkName = "reportMemory()"
             landmarkType = "7">
             <Locations>
                <Location
@@ -79,7 +79,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "20"
             endingLineNumber = "20"
-            landmarkName = "init()"
+            landmarkName = "reportMemory()"
             landmarkType = "7">
             <Locations>
                <Location
@@ -134,7 +134,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "DF51E47D-2ABA-4E36-AFD3-17FE91DFC300"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TestingEntitlementsBroadcastExtension/SampleHandler.swift"
@@ -142,15 +142,15 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "24"
             endingLineNumber = "24"
-            landmarkName = "init()"
-            landmarkType = "7">
+            landmarkName = "SampleHandler"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "CA149A10-8C15-45E8-A6B4-DED89F0C9244"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TestingEntitlementsBroadcastExtension/SampleHandler.swift"
@@ -158,15 +158,77 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "48"
             endingLineNumber = "48"
-            landmarkName = "saveFrameToPhotoLibrary(_:)"
+            landmarkName = "init()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "CA149A10-8C15-45E8-A6B4-DED89F0C9244 - df37b19a83c23afb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Bool, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in TestingEntitlementsBroadcastExtension.SampleHandler.saveFrameToPhotoLibrary(__C.CMSampleBufferRef) -&gt; ()"
+                  moduleName = "TestingEntitlementsBroadcastExtension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/laptop/Development/FRAM3D-UV-BIN/TestingEntitlements/TestingEntitlementsBroadcastExtension/SampleHandler.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "48"
+                  endingLineNumber = "48"
+                  offsetFromSymbolStart = "96">
+               </Location>
+               <Location
+                  uuid = "CA149A10-8C15-45E8-A6B4-DED89F0C9244 - df37b19a83c23afb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Bool, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in TestingEntitlementsBroadcastExtension.SampleHandler.saveFrameToPhotoLibrary(__C.CMSampleBufferRef) -&gt; ()"
+                  moduleName = "TestingEntitlementsBroadcastExtension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/laptop/Development/FRAM3D-UV-BIN/TestingEntitlements/TestingEntitlementsBroadcastExtension/SampleHandler.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "48"
+                  endingLineNumber = "48"
+                  offsetFromSymbolStart = "84">
+               </Location>
+               <Location
+                  uuid = "CA149A10-8C15-45E8-A6B4-DED89F0C9244 - 71f997b273e3fbe5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TestingEntitlementsBroadcastExtension.SampleHandler.init() -&gt; TestingEntitlementsBroadcastExtension.SampleHandler"
+                  moduleName = "TestingEntitlementsBroadcastExtension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/laptop/Development/FRAM3D-UV-BIN/TestingEntitlements/TestingEntitlementsBroadcastExtension/SampleHandler.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "48"
+                  endingLineNumber = "48"
+                  offsetFromSymbolStart = "1740">
+               </Location>
+               <Location
+                  uuid = "CA149A10-8C15-45E8-A6B4-DED89F0C9244 - 965fa85f424d4091"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 @Sendable (__C.NSTimer) -&gt; () in TestingEntitlementsBroadcastExtension.SampleHandler.init() -&gt; TestingEntitlementsBroadcastExtension.SampleHandler"
+                  moduleName = "TestingEntitlementsBroadcastExtension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/laptop/Development/FRAM3D-UV-BIN/TestingEntitlements/TestingEntitlementsBroadcastExtension/SampleHandler.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "49"
+                  endingLineNumber = "49"
+                  offsetFromSymbolStart = "40">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "162A334C-8158-4FDF-BBC4-AC3D80F0131C"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TestingEntitlementsBroadcastExtension/SampleHandler.swift"
@@ -174,8 +236,55 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "51"
             endingLineNumber = "51"
-            landmarkName = "saveFrameToPhotoLibrary(_:)"
+            landmarkName = "init()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "162A334C-8158-4FDF-BBC4-AC3D80F0131C - df37b19a83c23b5e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Bool, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in TestingEntitlementsBroadcastExtension.SampleHandler.saveFrameToPhotoLibrary(__C.CMSampleBufferRef) -&gt; ()"
+                  moduleName = "TestingEntitlementsBroadcastExtension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/laptop/Development/FRAM3D-UV-BIN/TestingEntitlements/TestingEntitlementsBroadcastExtension/SampleHandler.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "51"
+                  endingLineNumber = "51"
+                  offsetFromSymbolStart = "416">
+               </Location>
+               <Location
+                  uuid = "162A334C-8158-4FDF-BBC4-AC3D80F0131C - df37b19a83c23b5e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Bool, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in TestingEntitlementsBroadcastExtension.SampleHandler.saveFrameToPhotoLibrary(__C.CMSampleBufferRef) -&gt; ()"
+                  moduleName = "TestingEntitlementsBroadcastExtension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/laptop/Development/FRAM3D-UV-BIN/TestingEntitlements/TestingEntitlementsBroadcastExtension/SampleHandler.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "51"
+                  endingLineNumber = "51"
+                  offsetFromSymbolStart = "344">
+               </Location>
+               <Location
+                  uuid = "162A334C-8158-4FDF-BBC4-AC3D80F0131C - 71f997b273e3fa40"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TestingEntitlementsBroadcastExtension.SampleHandler.init() -&gt; TestingEntitlementsBroadcastExtension.SampleHandler"
+                  moduleName = "TestingEntitlementsBroadcastExtension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/laptop/Development/FRAM3D-UV-BIN/TestingEntitlements/TestingEntitlementsBroadcastExtension/SampleHandler.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "51"
+                  endingLineNumber = "51"
+                  offsetFromSymbolStart = "1924">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
