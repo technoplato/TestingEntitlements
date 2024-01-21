@@ -66,6 +66,9 @@
 		40605CC62B5D57380047D75F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		40605CC92B5D57380047D75F /* BroadcastSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastSetupViewController.swift; sourceTree = "<group>"; };
 		40605CCB2B5D57380047D75F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		40605CD92B5D575F0047D75F /* TestingEntitlementsBroadcastExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestingEntitlementsBroadcastExtension.entitlements; sourceTree = "<group>"; };
+		40605CDA2B5D57700047D75F /* TestingEntitlements.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestingEntitlements.entitlements; sourceTree = "<group>"; };
+		40605CDB2B5D577C0047D75F /* TestingEntitlementsBroadcastExtensionSetupUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestingEntitlementsBroadcastExtensionSetupUI.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +123,7 @@
 		40605CA52B5D57240047D75F /* TestingEntitlements */ = {
 			isa = PBXGroup;
 			children = (
+				40605CDA2B5D57700047D75F /* TestingEntitlements.entitlements */,
 				40605CA62B5D57240047D75F /* TestingEntitlementsApp.swift */,
 				40605CA82B5D57240047D75F /* ContentView.swift */,
 				40605CAA2B5D57250047D75F /* Assets.xcassets */,
@@ -148,6 +152,7 @@
 		40605CBC2B5D57380047D75F /* TestingEntitlementsBroadcastExtension */ = {
 			isa = PBXGroup;
 			children = (
+				40605CD92B5D575F0047D75F /* TestingEntitlementsBroadcastExtension.entitlements */,
 				40605CBD2B5D57380047D75F /* SampleHandler.swift */,
 				40605CBF2B5D57380047D75F /* Info.plist */,
 			);
@@ -157,6 +162,7 @@
 		40605CC82B5D57380047D75F /* TestingEntitlementsBroadcastExtensionSetupUI */ = {
 			isa = PBXGroup;
 			children = (
+				40605CDB2B5D577C0047D75F /* TestingEntitlementsBroadcastExtensionSetupUI.entitlements */,
 				40605CC92B5D57380047D75F /* BroadcastSetupViewController.swift */,
 				40605CCB2B5D57380047D75F /* Info.plist */,
 			);
@@ -454,6 +460,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TestingEntitlements/TestingEntitlements.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TestingEntitlements/Preview Content\"";
@@ -484,6 +491,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TestingEntitlements/TestingEntitlements.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TestingEntitlements/Preview Content\"";
@@ -511,6 +519,7 @@
 		40605CD32B5D57380047D75F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = TestingEntitlementsBroadcastExtensionSetupUI/TestingEntitlementsBroadcastExtensionSetupUI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4EC72DECN9;
@@ -536,6 +545,7 @@
 		40605CD42B5D57380047D75F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = TestingEntitlementsBroadcastExtensionSetupUI/TestingEntitlementsBroadcastExtensionSetupUI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4EC72DECN9;
@@ -561,6 +571,7 @@
 		40605CD62B5D57380047D75F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = TestingEntitlementsBroadcastExtension/TestingEntitlementsBroadcastExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4EC72DECN9;
@@ -586,6 +597,7 @@
 		40605CD72B5D57380047D75F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = TestingEntitlementsBroadcastExtension/TestingEntitlementsBroadcastExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4EC72DECN9;
